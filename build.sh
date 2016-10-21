@@ -13,8 +13,8 @@ THREAD="-j9"
 
 
 # arter97's GCC
-GCC64_PATH="$HOME/q/prebuilts/gcc/linux-x86/aarch64/aarch64-elf"
-GCC32_PATH="$HOME/q/prebuilts/gcc/linux-x86/arm/arm-eabi"
+GCC64_PATH="$HOME/aex_poco/prebuilts/gcc/linux-x86/aarch64/aarch64-elf"
+GCC32_PATH="$HOME/aex_poco/prebuilts/gcc/linux-x86/arm/arm-eabi"
 
 # 64-bit GCC toolchain prefix
 GCC64_PREFIX="$GCC64_PATH/bin/aarch64-elf-"
@@ -28,12 +28,12 @@ export CROSS_COMPILE_ARM32="$GCC32_PREFIX"
 
 # Kernel Details
 DEFCONFIG="beryllium_user_defconfig"
-VER="-1.0"
+VER="-2.0"
 
 # Paths
 KERNEL_DIR=`pwd`
 AK_DIR="$KERNEL_DIR/anykernel"
-ZIP_MOVE="$HOME/kers"
+ZIP_MOVE="$HOME/aex_poco"
 ZIMAGE_DIR="$KERNEL_DIR/out/arch/arm64/boot"
 
 # Functions

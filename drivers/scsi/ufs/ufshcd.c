@@ -365,7 +365,7 @@ ufs_get_pm_lvl_to_link_pwr_state(enum ufs_pm_level lvl)
 	return ufs_pm_lvl_states[lvl].link_state;
 }
 
-<<<<<<< HEAD
+
 static inline void ufshcd_set_card_online(struct ufs_hba *hba)
 {
 	atomic_set(&hba->card_state, UFS_CARD_STATE_ONLINE);
@@ -2003,7 +2003,7 @@ static void ufshcd_set_auto_hibern8_timer(struct ufs_hba *hba, u32 delay)
 static int ufshcd_hibern8_hold(struct ufs_hba *hba, bool async)
 {
 	int rc = 0;
-	bool flush_result;
+
 	unsigned long flags;
 
 	if (!ufshcd_is_hibern8_on_idle_allowed(hba))
@@ -2018,35 +2018,10 @@ static int ufshcd_hibern8_hold(struct ufs_hba *hba, bool async)
 	}
 
 start:
-<<<<<<< HEAD
+
 	switch (hba->hibern8_on_idle.state) {
 	case HIBERN8_EXITED:
-=======
-	switch (hba->clk_gating.state) {
-	case CLKS_ON:
-		/*
-		 * Wait for the ungate work to complete if in progress.
-		 * Though the clocks may be in ON state, the link could
-		 * still be in hibner8 state if hibern8 is allowed
-		 * during clock gating.
-		 * Make sure we exit hibern8 state also in addition to
-		 * clocks being ON.
-		 */
-		if (ufshcd_can_hibern8_during_gating(hba) &&
-		    ufshcd_is_link_hibern8(hba)) {
-			if (async) {
-				rc = -EAGAIN;
-				hba->clk_gating.active_reqs--;
-				break;
-			}
-			spin_unlock_irqrestore(hba->host->host_lock, flags);
-			flush_result = flush_work(&hba->clk_gating.ungate_work);
-			if (hba->clk_gating.is_suspended && !flush_result)
-				goto out;
-			spin_lock_irqsave(hba->host->host_lock, flags);
-			goto start;
-		}
->>>>>>> 2a8b2696ba99f141340d58660b46c9e820a1648a
+
 		break;
 	case REQ_HIBERN8_ENTER:
 		if (cancel_delayed_work(&hba->hibern8_on_idle.enter_work)) {
@@ -7089,14 +7064,10 @@ static int ufshcd_eh_device_reset_handler(struct scsi_cmnd *cmd)
 	host = cmd->device->host;
 	hba = shost_priv(host);
 
-<<<<<<< HEAD
+
 	ufshcd_print_cmd_log(hba);
-	lrbp = &hba->lrb[tag];
-	err = ufshcd_issue_tm_cmd(hba, lrbp->lun, 0, UFS_LOGICAL_RESET, &resp);
-=======
 	lun = ufshcd_scsi_to_upiu_lun(cmd->device->lun);
 	err = ufshcd_issue_tm_cmd(hba, lun, 0, UFS_LOGICAL_RESET, &resp);
->>>>>>> 2a8b2696ba99f141340d58660b46c9e820a1648a
 	if (err || resp != UPIU_TASK_MANAGEMENT_FUNC_COMPL) {
 		if (!err)
 			err = resp;
@@ -10070,11 +10041,6 @@ int ufshcd_shutdown(struct ufs_hba *hba)
 
 	if (ufshcd_is_ufs_dev_poweroff(hba) && ufshcd_is_link_off(hba))
 		goto out;
-<<<<<<< HEAD
-=======
-
-	pm_runtime_get_sync(hba->dev);
->>>>>>> 2a8b2696ba99f141340d58660b46c9e820a1648a
 
 	pm_runtime_get_sync(hba->dev);
 	ufshcd_hold_all(hba);
