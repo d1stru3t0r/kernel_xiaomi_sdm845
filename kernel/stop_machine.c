@@ -522,7 +522,8 @@ static int __init cpu_stop_init(void)
 }
 early_initcall(cpu_stop_init);
 
-static int __stop_machine(cpu_stop_fn_t fn, void *data, const struct cpumask *cpus)
+int stop_machine_cpuslocked(cpu_stop_fn_t fn, void *data,
+			    const struct cpumask *cpus)
 {
 	struct multi_stop_data msdata = {
 		.fn = fn,
@@ -530,6 +531,8 @@ static int __stop_machine(cpu_stop_fn_t fn, void *data, const struct cpumask *cp
 		.num_threads = num_online_cpus(),
 		.active_cpus = cpus,
 	};
+
+	lockdep_assert_cpus_held();
 
 	if (!stop_machine_initialized) {
 		/*
@@ -560,9 +563,9 @@ int stop_machine(cpu_stop_fn_t fn, void *data, const struct cpumask *cpus)
 	int ret;
 
 	/* No CPUs can come up or down during this. */
-	get_online_cpus();
-	ret = __stop_machine(fn, data, cpus);
-	put_online_cpus();
+	cpus_read_lock();
+	ret = stop_machine_cpuslocked(fn, data, cpus);
+	cpus_read_unlock();
 	return ret;
 }
 EXPORT_SYMBOL_GPL(stop_machine);
