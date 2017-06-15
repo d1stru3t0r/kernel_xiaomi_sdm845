@@ -244,19 +244,6 @@ void rcuwait_wake_up(struct rcuwait *w)
 }
 EXPORT_SYMBOL_GPL(rcuwait_wake_up);
 
-struct task_struct *try_get_task_struct(struct task_struct **ptask)
-{
-	struct task_struct *task;
-
-	rcu_read_lock();
-	task = task_rcu_dereference(ptask);
-	if (task)
-		get_task_struct(task);
-	rcu_read_unlock();
-
-	return task;
-}
-
 /*
  * Determine if a process group is "orphaned", according to the POSIX
  * definition in 2.2.2.52.  Orphaned process groups are not to be affected
