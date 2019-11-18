@@ -242,6 +242,7 @@ void rcuwait_wake_up(struct rcuwait *w)
 		wake_up_process(task);
 	rcu_read_unlock();
 }
+EXPORT_SYMBOL_GPL(rcuwait_wake_up);
 
 struct task_struct *try_get_task_struct(struct task_struct **ptask)
 {
