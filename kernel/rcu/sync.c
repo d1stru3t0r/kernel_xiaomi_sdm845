@@ -186,12 +186,7 @@ void rcu_sync_dtor(struct rcu_sync *rsp)
 	spin_unlock_irq(&rsp->rss_lock);
 
 	if (cb_state != CB_IDLE) {
-<<<<<<< HEAD
-		gp_ops[rsp->gp_type].wait();
-		BUG_ON(rsp->cb_state != CB_IDLE);
-=======
 		rcu_barrier();
-		WARN_ON_ONCE(rsp->cb_state != CB_IDLE);
->>>>>>> 8d2677d963dd... rcu/sync: Kill rcu_sync_type/gp_type
+		BUG_ON(rsp->cb_state != CB_IDLE);
 	}
 }
